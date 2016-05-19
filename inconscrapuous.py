@@ -1,16 +1,18 @@
 # import modules
 import requests
 import bs4
-import csv
 import time
 
 # create empty list to hold all dictionaries.
 title_dict_list = []
 
-# TODO: 
- # Check if blog spans multiple pages.(Check for <span class="last"> for full range.)
- # If it does, loop through and pull all of them:
-
+"""
+TODO: 
+ 1. Check if blog spans multiple pages.(Check for <span class="last"> 
+ for full range.  If it does, loop through and pull all of them.
+ 2. Sort by post date: 
+  <time datetime="2016-04-30" class="article_time"> Apr 30, 2016</time>
+"""
 
 # for number in range(1,[last_page]):
 #     time.sleep(1) # don't generate too many requests
@@ -22,12 +24,13 @@ url = "http://cheesetrees.net"
 r = requests.get(url)
 html = r.content
 soup = bs4.BeautifulSoup(html, "html.parser")
+
+# links = soup.findAll()('a', href=True)
+
 articles = soup.findAll('h1', {'class': "article_title"})
-
-# for a in articles.findAll('h1', {'class': "article_title"})
-
 for article in articles:
-    text = article.getText().rstrip()
+    text = article.getText().rstrip(  )
+    link = article.test
 
     if len(text) > 0:
         article_title = text.encode('utf-8')
