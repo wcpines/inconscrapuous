@@ -31,7 +31,7 @@ articles = soup.findAll('h1', {'class': "article_title"})
 for article in articles:
     text = article.getText().strip('\n')
     link = article('a')[0].get('href').encode('utf-8')
-    protocol = 'http'
+    protocol = 'http:'
     full_url = protocol + link
 
     if len(text) > 0:
