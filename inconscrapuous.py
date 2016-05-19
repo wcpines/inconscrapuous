@@ -4,7 +4,7 @@ import bs4
 import time
 
 # create empty list to hold all dictionaries.
-title_dict_list = []
+title_list = []
 
 """
 TODO: 
@@ -29,13 +29,15 @@ soup = bs4.BeautifulSoup(html, "html.parser")
 
 articles = soup.findAll('h1', {'class': "article_title"})
 for article in articles:
-    text = article.getText().rstrip(  )
-    link = article.test
+    text = article.getText().strip('\n')
+    link = article('a')[0].get('href').encode('utf-8')
+    protocol = 'http'
+    full_url = protocol + link
 
     if len(text) > 0:
         article_title = text.encode('utf-8')
-        # Transform and Store the data in dictionary format.
-        d = {'article_title': article_title, 'link': 'test'}
-        title_dict_list.append(d)
+        mdown_link = '1. [%s](%s)' % (article_title,full_url)
+        title_list.append(mdown_link.strip("'"))
 
-# with open('Blog Archive', 'w') as text_file:
+for title in title_list:
+  print title
