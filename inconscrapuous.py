@@ -4,62 +4,65 @@ import bs4
 import time
 import datetime
 
+# TODO: 
+# 1. Get date of last post on last page, make "posts from" year go until that posts year
+# 2. Refactor garbarge lines
+# 3. Fix Markdown formatting
 
-"""
-TODO:
-1. Check if blog spans multiple pages.(Check for <span class="last">
-for full range.  If it does, loop through and pull all of them.
-2. Generate markdown file
-"""
+range_url = "https://j2kun.svbtle.com/"
 
-# for number in range(1,[last_page]):
-#  time.sleep(1) # don't generate too many requests
-#  url = "http://cheesetrees.net/page/{}".format(number)
-
-
-# Create empty lists by year to hold article components.
-# NOTE: This only works for 2015 and 2016.
-# Need a better way to do this later.
-
-
-url = "http://cheesetrees.net"
-r = requests.get(url)
+r = requests.get(range_url)
 html = r.content
 soup = bs4.BeautifulSoup(html, "html.parser")
-articles = soup.findAll('article', {'class': 'post user_show'})
 
-dict_list = []
+# this can't be the right way to get this...
+page_count = int(soup.findAll('span', {'class': 'last'})[0]('a')[0].get('href').encode('utf-8').split('/')[2])
 
-for article in articles:
-    try:
-        article_title = article('a')[0].getText().encode('utf-8')
-        datestring = article('time')[0].get('datetime').encode('utf-8')
-        new = datetime.datetime.strptime(datestring, "%Y-%m-%d")
-        month = new.strftime("%B")
-        link = 'http:'+article('a')[0].get('href').encode('utf-8')
-        mdown_link = '- [%s](%s)' % (article_title, link)
-        year = int(datestring.split('-')[0])
+for number in range(1, page_count):
+    time.sleep(1)  # don't generate too many requests
+    full_url = "https://j2kun.svbtle.com/page/{}".format(number)
 
-        d = {
-            'link': mdown_link,
-            'date': datestring,
-            'year': year
-        }
-        dict_list.append(d)
-    except Exception as e:
-        pass
+    dict_list = []
+
+    articles = soup.findAll('article', {'class': 'post user_show'})
+    for article in articles:
+        try:
+            article_title = article('a')[0].getText().encode('utf-8')
+            datestring = article('time')[0].get('datetime').encode('utf-8')
+            new = datetime.datetime.strptime(datestring, "%Y-%m-%d")
+            month = new.strftime("%B")
+            link = 'http:'+article('a')[0].get('href').encode('utf-8')
+            mdown_link = '- [%s](%s)' % (article_title, link)
+            year = int(datestring.split('-')[0])
+
+            d = {
+                'link': mdown_link,
+                'date': datestring,
+                'year': year
+            }
+            dict_list.append(d)
+        except Exception as e:
+            pass
 
 
 print '#Archive'
 
-print '##Posts from 2016'
+current_year = datetime.datetime.now().year
+
+print '##Posts from %i' % current_year
 
 for d in dict_list:
-    if d['year'] == 2016:
+    if d['year'] == current_year:
         print d['link'] + "  " + "(" + d['date'] + ")"
 
-print '##Posts from 2015'
+print '##Posts from %i' % (current_year - 1)
 
 for d in dict_list:
-    if d['year'] == 2015:
+    if d['year'] == (current_year - 1):
+        print d['link'] + "  " + "(" + d['date'] + ")"
+
+print '##Posts from %i' % (current_year - 2)
+
+for d in dict_list:
+    if d['year'] == (current_year - 2):
         print d['link'] + "  " + "(" + d['date'] + ")"
