@@ -1,13 +1,11 @@
 # import shit you need
-from IPython import embed
 import bs4
 import datetime
 import requests
-import subprocess
 import time
 
 # URL of blog to be scraped
-blog_url = 'https://dcurt.is/'
+blog_url = raw_input('Svbtle blog Url >>> ')
 
 # list for holding article key-value info defined in `d`, L.37
 dict_list = []
@@ -15,22 +13,12 @@ dict_list = []
 # list for determining oldest posts year, see L74
 year_list = []
 
-# define a function for access clipboard
-# source: http://www.macdrifter.com/2011/12/python-and-the-mac-clipboard.html
-
-def setClipboardData(data):
- p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
- p.stdin.write(data)
-
-
- retcode = p.wait()
 # define a function for getting the blog html in a soup object
 def cook_soup(url):
     r = requests.get(url)
     html = r.content
     soup = bs4.BeautifulSoup(html, "html.parser")
     return soup
-
 
 # define function for extracting article info and dumping into dicts / lists
 def parse_info(articles):
@@ -65,9 +53,10 @@ if not last_one:
     articles = soup.findAll('article', {'class': 'post user_show'})
     parse_info(articles)
 
-# TODO: This loop is duplicating page 22, skipping 23, and getting 24.
-#   1. Check `last_one`--make sure it's the last page. 
-#   2.
+# TODO: This next loop is duplicating page 22, skipping 23, and getting 24.
+# This appears be an issue with Svbtle's pagination.  Try editing URL manually
+# to see issue
+
 else: 
     page_count = int(last_one[0]('a')[0].get('href').encode('utf-8').split('/')[2])
     alist = []
@@ -82,20 +71,15 @@ else:
     for articles in alist:
         parse_info(articles)
 
-embed()
 # Loop for appropriate number of headings  to determine number of year headings
 current_year = datetime.datetime.now().year
 oldest_post_year = sorted(year_list)[0]
 year_count = current_year - oldest_post_year
 
-
-
-#  output = "Results copied to system clipboard" TODO: Make this work?
 output = \
-"""=============================================================================
-|| Here's your archive.  You can copy/paste the output below into a new post:
-=============================================================================\n"""
-print output
+"""=================================================================================
+|| ^^ Here's your archive.  You can copy/paste the output below into its own post
+=================================================================================\n"""
 print '#Archive'
 for number in range(0, year_count+1):  # need to include the current year, so expand year count...kind of dumb)
     print '\n##Posts from %i' % (current_year - number)
@@ -103,4 +87,5 @@ for number in range(0, year_count+1):  # need to include the current year, so ex
         if d['year'] == (current_year - number):
             print d['link'] + "  " + "*(" + d['date'] + ")*"
 
+print output
 
