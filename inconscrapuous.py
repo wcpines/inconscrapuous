@@ -1,14 +1,13 @@
-# import shit you need
 import bs4
 import datetime
 import requests
 import time
 
 # URL of blog to be scraped
-blog_url = raw_input('Svbtle blog Url >>> ')
+blog_url = raw_input('Svbtle blog Url (include protocol)>>> ')
 
 # list for holding article key-value info defined in `d`, L.37
-dict_list = []
+post_dict_list = []
 
 # list for determining oldest posts year, see L74
 year_list = []
@@ -26,18 +25,18 @@ def parse_info(articles):
         try:
             article_title = article('a')[0].getText().encode('utf-8')
             datestring = article('time')[0].get('datetime').encode('utf-8')
-            new = datetime.datetime.strptime(datestring, "%Y-%m-%d")
-            month = new.strftime("%B")
+            parsed_date = datetime.datetime.strptime(datestring, "%Y-%m-%d")
+            month = parsed_date.strftime("%B")
             link = 'http:'+article('a')[0].get('href').encode('utf-8')
             mdown_link = '- [%s](%s)' % (article_title, link)
             year = int(datestring.split('-')[0])
 
-            d = {
+            post_dict = {
             'link': mdown_link,
             'date': datestring,
             'year': year
             }
-            dict_list.append(d)
+            post_dict_list.append(post_dict)
             year_list.append(year)
 
         except Exception as e:
@@ -57,7 +56,7 @@ if not last_one:
 # This appears be an issue with Svbtle's pagination.  Try editing URL manually
 # to see issue
 
-else: 
+else:
     page_count = int(last_one[0]('a')[0].get('href').encode('utf-8').split('/')[2])
     alist = []
     for number in range(1, page_count + 1):  # include the last page
@@ -74,18 +73,18 @@ else:
 # Loop for appropriate number of headings  to determine number of year headings
 current_year = datetime.datetime.now().year
 oldest_post_year = sorted(year_list)[0]
-year_count = current_year - oldest_post_year
+year_count = (current_year - oldest_post_year) + 1
 
 output = \
 """=================================================================================
 || ^^ Here's your archive.  You can copy/paste the output below into its own post
 =================================================================================\n"""
 print '#Archive'
-for number in range(0, year_count+1):  # need to include the current year, so expand year count...kind of dumb)
+for number in range(0, year_count):  # need to include the current year, so expand year count...kind of dumb)
     print '\n##Posts from %i' % (current_year - number)
-    for d in dict_list:
-        if d['year'] == (current_year - number):
-            print d['link'] + "  " + "*(" + d['date'] + ")*"
+    for post_dict in post_dict_list:
+        if post_dict['year'] == (current_year - number):
+            print post_dict['link'] + "  " + "*(" + post_dict['date'] + ")*"
 
 print output
 
