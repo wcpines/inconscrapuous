@@ -1,50 +1,47 @@
 # Do I need to pull all these in?
-from flask import Flask, request, render_template
-#  import inconscrapuous
+from IPython import embed
+from inconscrapuous import Scraper
+from flask import Flask, render_template, request, redirect, url_for, flash
+import os
 
 app = Flask(__name__)
-
-#  @app.route('/', methods=['GET', 'POST'])
-#      """
-#      Show the home page with a basic form.  If the user provides a URL to scrape,
-#      run the scraper
-#      """
-
-#      def homepage():
-#          error = None  # Default to no error
-
-#          if request.method == 'POST':
-#              if (?) not in request.form['url'] # If the URL doesn't contain some stuff
-#                  error = "Sorry, please provide a valid URL to page hosted on svbtle"
-#                  return render_template('?', error=error) # error template tbd?  robably will just pass the error to Javascript
-#              else
-#                  return scrape_the_page(request.form['url'] ) # method should be a service object?
-
-#          else
-
-#              return render_template('home')
+app.config['DEBUG'] = True
+app.jinja_env.cache = None
+app.secret_key = 'some_secret'
 
 @app.route('/')
-def hello():
-    return render_template('hello.html', thing='thang')
+def home():
+    """Show the home page with a basic form."""
+    embed()
+    return render_template('home.html', animation = "bigEntrance")
+
+@app.route('/scrape', methods=['POST'])
+def scrape():
+    """When the user provides a URL, run the scraper and redirect to the TOC page."""
+    url = request.form.get("url").strip().lower() # normalize form input
+    if url and "http://" in url:
+        error = None
+        scraper = Scraper()
+        scraper.get_parsed_articles(url)
+        article_dicts = scraper.article_dict_list
+        year_info = scraper.year_info()
+        return render_template('toc.html', article_dicts = request.args.get('article_dicts'), year_info = request.args.get('year_info'), animation="")
+    else:
+        error = "Please provide a valid URL"
+        flash(error)
+        return redirect(url_for('home'), animation = None)
 
 if __name__ == '__main__':
-    app.run()
-
-@app.route('/', method='POST')
-def hello():
-    #  url = request.form.get("some_var")
-    #  info = inconscrapuous.get_parsed_articles(url)
-    return render_template('hello.html')# , info=info)
-
-if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
 
 
-# Flow:
-#  - Homepage
-#  - Submit URL
-#  - Check that URL has protocol
-#  - Check that the site is actually svbtle
-#      'svbtle' in requests.content == True
-#  - Parse the URL into content
+# QUESTIONS/TODO:
+    #  - Throwing erros?
+    #      - URL missing
+    #      - URL invalid
+    #  - Cache busting properly
+    #  - Using JS in another template to preview markdown
+    #  - Make button correct size
+    #  - Make compatible with FF and GC
+
+

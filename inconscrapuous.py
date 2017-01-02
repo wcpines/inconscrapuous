@@ -13,8 +13,12 @@ class Scraper:
 
     def cook_soup(self, url):
         """Scrape the given url and return html as a soup object."""
+        # validate form input before submitting?
+        # if URL != http://, reject, flash error (javascript/html side?)
         r = requests.get(url)
+        # custom 404 if != 200
         html = r.content
+        # if content doessn't incude Svbtle: "Sorry, this is for Svbtle-hosted blogs only."
         soup = bs4.BeautifulSoup(html, "html.parser")
         return soup
 
@@ -28,31 +32,22 @@ class Scraper:
         When there is a 'next' and a 'previous', get the next page, then scrape it.
         When there is no 'next' and a previous, scrape that (last) page and stop.
 
-        e.g. HTML:
-              <nav class="pagination">
-                <span class="prev">
-                  <a rel="previous" href="/page/1">←   Prev</a>
-                </span>
-                <span class="next">
-                  <a rel="next" href="/page/3">Next   →</a>
-                </span>
-              </nav>
         """
         soup = self.cook_soup(url)
         article_sets = []
         while (len(soup.find_all('a', {'rel': 'next'})) > 0 and
-                len(soup.find_all('a', {'rel': 'prev'})) < 1):
+               len(soup.find_all('a', {'rel': 'prev'})) < 1):
             next_page_path = soup.find('a', {'rel': 'next'}).get('href').encode('utf-8')
             page_articles = soup.find_all('article', {'class': 'post user_show'})
             article_sets.append(page_articles)
             next_url = url + next_page_path
             soup = self.cook_soup(next_url)
-            print "next article is {}".format(next_url)
+            print "scraping page {}".format(next_url)
             #  time.sleep(1)  # don't generate too many requests too quickly
         else:
             page_articles = soup.find_all('article', {'class': 'post user_show'})
             article_sets.append(page_articles)
-        return article_sets
+            return article_sets
 
 
     def parse_info(self, articles):
@@ -72,14 +67,14 @@ class Scraper:
                 parsed_date = datetime.datetime.strptime(datestring, "%Y-%m-%d")
                 month = parsed_date.strftime("%B")
                 link = 'http:'+article('a')[0].get('href').encode('utf-8')
-                mdown_link = '- [%s](%s)' % (article_title, link)
+                mdown_link = '[%s](%s)' % (article_title, link)
                 year = int(datestring.split('-')[0])
 
                 article_dict = {
-                        'link': mdown_link,
-                        'date': datestring,
-                        'year': year
-                        }
+                    'link': mdown_link.decode('utf-8'), # Jinja template needs it in unicode
+                    'date': datestring,
+                    'year': year
+                }
                 self.article_dict_list.append(article_dict)
                 self.year_list.append(year)
 
@@ -96,25 +91,13 @@ class Scraper:
         for articles in article_sets:
             self.parse_info(articles)
 
-        return self.article_dict_list
+        return (self.article_dict_list)
 
 
-    #  def output_toc(self):
-    #      self.year_list = sorted(set(year_list)) # Unique and ordered years
-    #      current_year = datetime.datetime.now().year
-    #      oldest_article_year = self.year_list[0]
-    #      year_count = (current_year - oldest_article_year) + 1
-
-    #      output = \
-    #              """=================================================================================
-    #      || ^^ Here's your archive.  You can copy/paste the output below into its own post
-    #      =================================================================================\n"""
-    #      print '#Archive'
-    #      for number in range(0, year_count+1):  # need to include the current year, so expand year count...kind of dumb)
-    #      print '\n##Posts from %i' % (current_year - number)
-    #      for d in self.article_dict_list:
-    #          if d['year'] == (current_year - number):
-    #              print d['link'] + "  " + "*(" + d['date'] + ")*"
-    #      print output
-
-
+    def year_info(self):
+        current_year = datetime.datetime.now().year
+        oldest_article_year = min(self.year_list)
+        return {
+            "current_year": current_year,
+            "oldest_article_year": oldest_article_year
+        }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    {%extends 'layout.html' %}
+  </head>
+  <body>
+
+    {% block content %}
+      <div class="row" id="toc-directions"class="six columns">
+        <p class="six columns">
+        Below is your markdown-formatted archive.
+        You can use it in a standalone post and link to it however you wish.  We suggest
+        naming the post simply 'Archive' for the clearest URL path.
+        </p>
+      </div>
+
+      <div class="row" >
+        <a id="preview-button" class="button" href=#>Preview Markdown</a>
+      </div>
+
+
+      <div class="eight columns" id="toc-list">
+        # Archive
+
+        {% for n in range(0, (year_info['current_year'] - year_info['oldest_article_year']) + 1) %}
+          <p> ## Posts from {{ year_info['current_year'] - n}}<p>
+          {% for dict in article_dicts %}
+            {% if dict['year'] == (year_info['current_year'] - n) %}
+              - {{dict['link']}} *({{ dict['date'] }})* <br>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+
+      </div>
+
+      <!-- JS
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        {#For markdown preview#} <script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.5.4/showdown.min.js"></script>
+        {#Test file#} <script type=text/javascript src="{{url_for('static', filename='scripts/scrape.js')}}"></script>
+
+  </body>
+{% endblock %}
+</html>

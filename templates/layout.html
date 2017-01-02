@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    {% block head %}
+
+    {% endblock %}
+
+    <!-- Basic Page Needs
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+      <meta charset="utf-8">
+      <title> Inconscrapuous </title>
+      <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+      <meta name="description" content="Svbtle TOC Maker">
+      <meta name="author" content="me">
+
+      <!-- FONT
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+        <!-- CSS
+          –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
+          <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/skeleton.css') }}">
+          <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/normalize.css') }}">
+          <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+
+
+
+  </head>
+
+  <body>
+
+
+
+    <div id="right-color-column">
+    </div>
+
+    <div class="row">
+      <div class="page-title">
+
+        <a href={{url_for('home')}}>
+          <img class={{animation}} id="logo" src="../static/images/incs_logo.png" />
+        </a>
+        <h2> Inconscrapuous </h2>
+
+      </div>
+
+      {% block content %}
+
+      {% endblock %}
+    </div>
+
+    <div id="left-color-column">
+    </div>
+
+
+
+    <!-- End Document
+      –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  </body>
+</html>
