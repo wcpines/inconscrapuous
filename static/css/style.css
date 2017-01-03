@@ -11,11 +11,17 @@
 }
 
 .alert-error {
-    width: 50%;
-    background-color: #F2D7D5;
-    border-left-color: #C0392B;
-    color: #C0392B;
-    text-align: center;
+  display: inline-block;
+  background-color: #F2D7D5;
+  border-left-color: #C0392B;
+  color: #C0392B;
+  text-align: center;
+}
+
+.alert-info {
+    background-color: #D6EAF8;
+    border-left-color: #3498DB;
+    color: #3498DB;
 }
 
 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
@@ -154,18 +160,20 @@ img {
   font-style: bold;
 }
 
+#toc-preview-button{
+  text-align:center;
+  margin: 0 auto;
+}
 
 #preview-button{
-  padding-left: 12%;
-  width: 20px;
+  text-align: center;
   border: solid 1px #273e6d;
   background-color: white;
-  text-align: right;
-
 }
 
 #preview-button:hover {
   color: #8b1515;
+  margin: 0 auto;
 }
 
 #toc-list{
@@ -208,8 +216,6 @@ h2,h3 {
   border: solid 1px #8b1515;
   background-color: white;
 }
-
-
 
 #generate {
   border: solid 1px #273e6d;

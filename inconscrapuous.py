@@ -2,6 +2,7 @@ import bs4
 import datetime
 import requests
 import time
+import re
 
 
 class Scraper:
@@ -12,13 +13,22 @@ class Scraper:
 
 
     def cook_soup(self, url):
-        """Scrape the given url and return html as a soup object."""
-        # validate form input before submitting?
-        # if URL != http://, reject, flash error (javascript/html side?)
-        r = requests.get(url)
-        # custom 404 if != 200
+        """
+        Scrape the given url and return html as a soup object.  If a valid
+        svbtle blog url is not provided, raise exceptions which can be used in
+        flash messages for the user.
+        """
+        if re.compile('http').search(url) is None:
+            raise Exception('Please provide a valid URL')
+        try:
+            r = requests.get(url)
+        except Exception as e:
+            raise Exception('Sorry, blog not found') # Handle all other exceptions the same
+        if r.status_code is not 200:
+            raise Exception('Sorry, blog not found')
         html = r.content
-        # if content doessn't incude Svbtle: "Sorry, this is for Svbtle-hosted blogs only."
+        if 'svbtle' not in html:
+            raise Exception('URL does not resolve to a Svbtle Blog')
         soup = bs4.BeautifulSoup(html, "html.parser")
         return soup
 

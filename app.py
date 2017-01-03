@@ -11,37 +11,48 @@ app.secret_key = 'some_secret'
 
 @app.route('/')
 def home():
-    """Show the home page with a basic form."""
-    embed()
-    return render_template('home.html', animation = "bigEntrance")
+    """
+    Show the home page with a basic form. If homepage reached due to a redirect
+    (i.e. an error) then prevent logo from animating.
+    """
 
-@app.route('/scrape', methods=['POST'])
-def scrape():
-    """When the user provides a URL, run the scraper and redirect to the TOC page."""
-    url = request.form.get("url").strip().lower() # normalize form input
-    if url and "http://" in url:
-        error = None
-        scraper = Scraper()
-        scraper.get_parsed_articles(url)
-        article_dicts = scraper.article_dict_list
-        year_info = scraper.year_info()
-        return render_template('toc.html', article_dicts = request.args.get('article_dicts'), year_info = request.args.get('year_info'), animation="")
+    if request.args.getlist('err'):
+        animation = ""
     else:
-        error = "Please provide a valid URL"
-        flash(error)
-        return redirect(url_for('home'), animation = None)
+        animation = "bigEntrance"
+
+    return render_template('home.html', animation = animation)
+
+@app.route('/scrape', methods=['GET','POST'])
+def scrape():
+    if request.method == 'GET':
+        return redirect(url_for('home'))
+    else:
+        url = request.form.get("url").strip().lower() # normalize form input
+        scraper = Scraper()
+        try:
+            scraper.get_parsed_articles(url)
+        except Exception as e:
+            flash(str(e), 'error')
+            return redirect(url_for('home', err = 't'))
+        else:
+            article_dicts = scraper.article_dict_list
+            year_info = scraper.year_info()
+            embed()
+            return render_template('toc.html', article_dicts = article_dicts, year_info = year_info, animation="")
+
+#  @app.route('/toc', methods=['GET'])
+#  def toc():
+
 
 if __name__ == '__main__':
     app.run(debug=True)
 
 
 # QUESTIONS/TODO:
-    #  - Throwing erros?
-    #      - URL missing
-    #      - URL invalid
     #  - Cache busting properly
     #  - Using JS in another template to preview markdown
     #  - Make button correct size
     #  - Make compatible with FF and GC
-
+    #  - Make compatible with FF and GC
 
