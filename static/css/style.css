@@ -1,0 +1,240 @@
+/************
+-- Layout --
+************/
+
+
+.alert {
+    display: block;
+    padding: 20px;
+    border-left: 5px solid;
+    text-align: center;
+}
+
+.alert-error {
+  display: inline-block;
+  background-color: #F2D7D5;
+  border-left-color: #C0392B;
+  color: #C0392B;
+  text-align: center;
+}
+
+.alert-info {
+    background-color: #D6EAF8;
+    border-left-color: #3498DB;
+    color: #3498DB;
+}
+
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
+#right-color-column{
+  position:fixed;
+  top:0 ;
+  right:0;
+  width:5%;
+  height:100%;
+  background-image: -webkit-gradient(
+  linear, left top, left bottom, from(rgba(139, 21, 21,0.9)),
+  to(rgba(80,80,80,0.2)), color-stop(.5,#333333)
+  );
+  background-image: -moz-linear-gradient(
+  rgba(139, 21, 21,0.9) 0%, rgba(80,80,80,0.2) 95%
+  );
+  height:100%;
+}
+
+#left-color-column{
+  position:fixed;
+  top:0 ;
+  left:0;
+  width:5%;
+  background-image: -webkit-gradient(
+  linear, left top, left bottom, from(rgba(139, 21, 21,0.9)),
+  to(rgba(80,80,80,0.2)), color-stop(.5,#333333)
+  );
+  background-image: -moz-linear-gradient(
+  rgba(139, 21, 21,0.9) 0%, rgba(80,80,80,0.2) 95%
+  );
+  height:100%;
+}
+
+img {
+  height: 150px;
+}
+
+.bigEntrance{
+	animation-name: bigEntrance;
+	-webkit-animation-name: bigEntrance;
+
+	animation-duration: 1.6s;
+	-webkit-animation-duration: 1.6s;
+
+	animation-timing-function: ease-out;
+	-webkit-animation-timing-function: ease-out;
+
+	visibility: visible !important;
+}
+
+@keyframes bigEntrance {
+	0% {
+		transform: scale(0.3) rotate(6deg) translateX(-30%) translateY(30%);
+		opacity: 0.2;
+	}
+	30% {
+		transform: scale(1.03) rotate(-2deg) translateX(2%) translateY(-2%);
+		opacity: 1;
+	}
+	45% {
+		transform: scale(0.98) rotate(1deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	60% {
+		transform: scale(1.01) rotate(-1deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	75% {
+		transform: scale(0.99) rotate(1deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	90% {
+		transform: scale(1.01) rotate(0deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1) rotate(0deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes bigEntrance {
+	0% {
+		-webkit-transform: scale(0.3) rotate(6deg) translateX(-30%) translateY(30%);
+		opacity: 0.2;
+	}
+	30% {
+		-webkit-transform: scale(1.03) rotate(-2deg) translateX(2%) translateY(-2%);
+		opacity: 1;
+	}
+	45% {
+		-webkit-transform: scale(0.98) rotate(1deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	60% {
+		-webkit-transform: scale(1.01) rotate(-1deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	75% {
+		-webkit-transform: scale(0.99) rotate(1deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	90% {
+		-webkit-transform: scale(1.01) rotate(0deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+	100% {
+		-webkit-transform: scale(1) rotate(0deg) translateX(0%) translateY(0%);
+		opacity: 1;
+	}
+}
+
+.page-title {
+  font-family: FreightSans;
+  font-style: Bold;
+  text-align: center;
+  padding-top: 10%
+}
+
+.subtitle{
+
+  font-family: Raleway;
+  text-align: center;
+}
+
+/*********
+-- TOC --
+*********/
+
+#toc-directions{
+
+  padding-left: 15%;
+  padding-top: 2%;
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+.toc-preview-buttons{
+  display: block;
+  float: left;
+  padding-left: 15%;
+  background-color: white;
+}
+
+.toc-preview-buttons input{
+  border: solid 1px #273e6d;
+}
+
+.toc-preview-buttons input:hover{
+  border: solid 1px #273e6d;
+  color: #8b1515;
+}
+
+
+#toc-list{
+  font-family: Menlo;
+  padding-top: 2%;
+  padding-left: 18%
+}
+
+
+/*********
+-- Home --
+*********/
+
+
+
+.errors{
+text-align: center;
+}
+
+
+.form-page{
+  text-align: center;
+  margin: 3%
+
+}
+
+
+h2,h3 {
+  font-family: FreightSans;
+  font-style: Bold;
+}
+
+
+#url-field {
+  border: solid 1px #273e6d;
+  background-color: white;
+}
+
+#url-field:focus {
+  border: solid 1px #8b1515;
+  background-color: white;
+}
+
+#generate {
+  border: solid 1px #273e6d;
+  background-color: white;
+}
+
+#generate:hover {
+  color: #8b1515;
+}
+
+/************
+-- Fonts --
+************/
+
+@import url(//fonts.googleapis.com/css?family=Raleway:400,300,600);
+
+@font-face {
+  font-family: FreightSans;
+  src: url(../fonts/FreightSans-Bold.ttf);
+  font-style: bold;
+}

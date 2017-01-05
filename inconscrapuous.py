@@ -1,91 +1,115 @@
-# import shit you need
 import bs4
 import datetime
 import requests
 import time
+import re
 
-# URL of blog to be scraped
-blog_url = raw_input('Svbtle blog Url >>> ')
 
-# list for holding article key-value info defined in `d`, L.37
-dict_list = []
+class Scraper:
+    """Instantiate object to scrape pages"""
+    def __init__(self, year_list = None,  article_dict_list = None):
+        # Avoid duplication between instantiations
+        #  http://stackoverflow.com/a/31798559/4667820
+        if year_list is None:
+            self.year_list = []
+        if article_dict_list is None:
+            self.article_dict_list = []
 
-# list for determining oldest posts year, see L74
-year_list = []
 
-# define a function for getting the blog html in a soup object
-def cook_soup(url):
-    r = requests.get(url)
-    html = r.content
-    soup = bs4.BeautifulSoup(html, "html.parser")
-    return soup
-
-# define function for extracting article info and dumping into dicts / lists
-def parse_info(articles):
-    for article in articles:
+    def cook_soup(self, url):
+        """
+        Scrape the given url and return html as a soup object.  If a valid
+        svbtle blog url is not provided, raise exceptions which can be used in
+        flash messages to the user.
+        """
+        if re.compile('http').search(url) is None:
+            raise Exception('Please provide a valid URL')
         try:
-            article_title = article('a')[0].getText().encode('utf-8')
-            datestring = article('time')[0].get('datetime').encode('utf-8')
-            new = datetime.datetime.strptime(datestring, "%Y-%m-%d")
-            month = new.strftime("%B")
-            link = 'http:'+article('a')[0].get('href').encode('utf-8')
-            mdown_link = '- [%s](%s)' % (article_title, link)
-            year = int(datestring.split('-')[0])
-
-            d = {
-            'link': mdown_link,
-            'date': datestring,
-            'year': year
-            }
-            dict_list.append(d)
-            year_list.append(year)
-
+            r = requests.get(url)
         except Exception as e:
-            pass
+            raise Exception('Sorry, blog not found') # Handle all other exceptions the same
+        if r.status_code is not 200:
+            raise Exception('Sorry, blog not found')
+        html = r.content
+        if 'svbtle' not in html:
+            raise Exception('URL does not resolve to a Svbtle Blog')
+        soup = bs4.BeautifulSoup(html, "html.parser")
+        return soup
 
 
-# Check if the blog spans multiple pages.
-soup = cook_soup(blog_url)
-last_one = soup.findAll('span', {'class': 'last'})
+    def get_articles(self, url):
+        """
+        Iterate through every page in the blog and find all articles.  Append
+        the list retreieved from each page to a 2D list; article_sets.
 
-# If it doesn't just grab the info from the first page.
-if not last_one:
-    articles = soup.findAll('article', {'class': 'post user_show'})
-    parse_info(articles)
+        When there is no 'next' and no 'previous', just scrape the current page
+        and stop.  When there is a 'next' and a 'previous', get the next page,
+        then scrape it.  When there is no 'next' but there is a previous,
+        scrape that (last) page and stop.
+        """
+        soup = self.cook_soup(url)
+        article_sets = []
+        while (len(soup.find_all('a', {'rel': 'next'})) > 0 and
+               len(soup.find_all('a', {'rel': 'prev'})) < 1):
+            next_page_path = soup.find('a', {'rel': 'next'}).get('href').encode('utf-8')
+            page_articles = soup.find_all('article', {'class': 'post user_show'})
+            article_sets.append(page_articles)
+            next_url = url + next_page_path
+            soup = self.cook_soup(next_url)
+            print "scraping page {}".format(next_url)
+        else:
+            page_articles = soup.find_all('article', {'class': 'post user_show'})
+            article_sets.append(page_articles)
+            return article_sets
 
-# TODO: This next loop is duplicating page 22, skipping 23, and getting 24.
-# This appears be an issue with Svbtle's pagination.  Try editing URL manually
-# to see issue
 
-else: 
-    page_count = int(last_one[0]('a')[0].get('href').encode('utf-8').split('/')[2])
-    alist = []
-    for number in range(1, page_count + 1):  # include the last page
-        full_url = blog_url + "/page/{}".format(number)
-        soup = cook_soup(full_url)
-        articles = soup.findAll('article', {'class': 'post user_show'})
-        alist.append(articles) # add page's article set to list--2D array
-        time.sleep(1)  # don't generate too many requests too quickly
+    def parse_info(self, articles):
+        """
+        For each article scraped, extract the 1) title, 2) date published (y/m/d),
+        and 3) URL. (1) and (3) are formatted into a markdown-style link. Add
+        values to a dict (aricle_dict) and append each dict to the master list
+        (article_dict_list). Add the year to the year_list, to be used for
+        generating headings.
+        """
+
+        for article in articles:
+            try:
+                article_title = article('a')[0].getText().encode('utf-8')
+                datestring = article('time')[0].get('datetime').encode('utf-8')
+                parsed_date = datetime.datetime.strptime(datestring, "%Y-%m-%d")
+                month = parsed_date.strftime("%B")
+                link = 'http:'+article('a')[0].get('href').encode('utf-8')
+                mdown_link = '[%s](%s)' % (article_title, link)
+                year = int(datestring.split('-')[0])
+
+                article_dict = {
+                    'link': mdown_link.decode('utf-8'), # Jinja template needs it in unicode
+                    'date': datestring,
+                    'year': year
+                }
+                self.article_dict_list.append(article_dict)
+                self.year_list.append(year)
+
+            except Exception as e:
+                pass
+
+    def get_parsed_articles(self, url):
+        """
+        Calls each other method above to get the articles and iterates over the
+        list to populate the dictionary list and list of years.
+        """
+
+        article_sets = self.get_articles(url)
+        for articles in article_sets:
+            self.parse_info(articles)
+
+        return (self.article_dict_list)
 
 
-    for articles in alist:
-        parse_info(articles)
-
-# Loop for appropriate number of headings  to determine number of year headings
-current_year = datetime.datetime.now().year
-oldest_post_year = sorted(year_list)[0]
-year_count = current_year - oldest_post_year
-
-output = \
-"""=================================================================================
-|| ^^ Here's your archive.  You can copy/paste the output below into its own post
-=================================================================================\n"""
-print '#Archive'
-for number in range(0, year_count+1):  # need to include the current year, so expand year count...kind of dumb)
-    print '\n##Posts from %i' % (current_year - number)
-    for d in dict_list:
-        if d['year'] == (current_year - number):
-            print d['link'] + "  " + "*(" + d['date'] + ")*"
-
-print output
-
+    def year_info(self):
+        current_year = datetime.datetime.now().year
+        oldest_article_year = min(self.year_list)
+        return {
+            "current_year": current_year,
+            "oldest_article_year": oldest_article_year
+        }

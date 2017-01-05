@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    {%extends 'layout.html' %}
+  </head>
+  <body>
+
+    {% block content %}
+
+      <div class="subtitle">
+        <em> Scrape your Svtble blog and generate an archive </em>
+      </div>
+
+      <div class="form-page row">
+
+
+        <form action="/scrape" method="post">
+          <input id="url-field" type="text" name="url" placeholder="http://...">
+          <input id="generate" type="submit" value="Scrape!">
+        </form>
+
+        <div class="alert-error">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+
+      </div>
+
+    {% endblock %}
+  </body>
+</html>
+
+
+<!-- #      print '#Archive' -->
+<!-- #      for number in range(0, year_count+1):  # need to include the current year, so expand year count...kind of dumb) -->
+<!-- #      print '\n##Posts from %i' % (current_year - number) -->
+<!-- #      for d in self.article_dict_list: -->
+<!-- #          if d['year'] == (current_year - number): -->
+<!-- #              print d['link'] + "  " + "*(" + d['date'] + ")*" -->
+<!-- #      print output -->
