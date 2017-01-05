@@ -9,6 +9,11 @@ app.config['DEBUG'] = True
 app.jinja_env.cache = None
 app.secret_key = 'some_secret'
 
+@app.route('/test')
+def test():
+    if request.method == 'GET':
+        return render_template('test.html')
+
 @app.route('/')
 def home():
     """
@@ -38,7 +43,6 @@ def scrape():
         else:
             article_dicts = scraper.article_dict_list
             year_info = scraper.year_info()
-            embed()
             return render_template('toc.html', article_dicts = article_dicts, year_info = year_info, animation="")
 
 #  @app.route('/toc', methods=['GET'])

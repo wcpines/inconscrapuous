@@ -6,17 +6,21 @@ import re
 
 
 class Scraper:
-    """Class to scrape pages"""
-    def __init__(self, year_list = [],  article_dict_list = []):
-        self.year_list = year_list
-        self.article_dict_list = article_dict_list
+    """Instantiate object to scrape pages"""
+    def __init__(self, year_list = None,  article_dict_list = None):
+        # Avoid duplication between instantiations
+        #  http://stackoverflow.com/a/31798559/4667820
+        if year_list is None:
+            self.year_list = []
+        if article_dict_list is None:
+            self.article_dict_list = []
 
 
     def cook_soup(self, url):
         """
         Scrape the given url and return html as a soup object.  If a valid
         svbtle blog url is not provided, raise exceptions which can be used in
-        flash messages for the user.
+        flash messages to the user.
         """
         if re.compile('http').search(url) is None:
             raise Exception('Please provide a valid URL')
@@ -35,13 +39,13 @@ class Scraper:
 
     def get_articles(self, url):
         """
-        Iterate through every page in the blog and find all articles.
-        Append the list retreieved from each page to a 2D list; article_sets.
+        Iterate through every page in the blog and find all articles.  Append
+        the list retreieved from each page to a 2D list; article_sets.
 
-        When there is no 'next' and no 'previous', just scrape that page and stop.
-        When there is a 'next' and a 'previous', get the next page, then scrape it.
-        When there is no 'next' and a previous, scrape that (last) page and stop.
-
+        When there is no 'next' and no 'previous', just scrape the current page
+        and stop.  When there is a 'next' and a 'previous', get the next page,
+        then scrape it.  When there is no 'next' but there is a previous,
+        scrape that (last) page and stop.
         """
         soup = self.cook_soup(url)
         article_sets = []
@@ -53,7 +57,6 @@ class Scraper:
             next_url = url + next_page_path
             soup = self.cook_soup(next_url)
             print "scraping page {}".format(next_url)
-            #  time.sleep(1)  # don't generate too many requests too quickly
         else:
             page_articles = soup.find_all('article', {'class': 'post user_show'})
             article_sets.append(page_articles)
@@ -63,11 +66,10 @@ class Scraper:
     def parse_info(self, articles):
         """
         For each article scraped, extract the 1) title, 2) date published (y/m/d),
-        and 3) URL. (1) and (3) are formatted into a markdown-style link. Add those
+        and 3) URL. (1) and (3) are formatted into a markdown-style link. Add
         values to a dict (aricle_dict) and append each dict to the master list
-        (article_dict_list)
-
-        Also add the year to the year_list, to be used for generating headings.
+        (article_dict_list). Add the year to the year_list, to be used for
+        generating headings.
         """
 
         for article in articles:

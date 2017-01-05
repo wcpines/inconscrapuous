@@ -154,32 +154,33 @@ img {
 
 #toc-directions{
 
-  padding-left: 12%;
+  padding-left: 15%;
   padding-top: 2%;
   font-size: 1.2em;
-  font-style: bold;
+  font-weight: 700;
 }
 
-#toc-preview-button{
-  text-align:center;
-  margin: 0 auto;
-}
-
-#preview-button{
-  text-align: center;
-  border: solid 1px #273e6d;
+.toc-preview-buttons{
+  display: block;
+  float: left;
+  padding-left: 15%;
   background-color: white;
 }
 
-#preview-button:hover {
-  color: #8b1515;
-  margin: 0 auto;
+.toc-preview-buttons input{
+  border: solid 1px #273e6d;
 }
+
+.toc-preview-buttons input:hover{
+  border: solid 1px #273e6d;
+  color: #8b1515;
+}
+
 
 #toc-list{
   font-family: Menlo;
-  padding-left: 11%;
   padding-top: 2%;
+  padding-left: 18%
 }
 
 
