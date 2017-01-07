@@ -6,7 +6,7 @@
 .alert {
     display: block;
     padding: 20px;
-    border-left: 5px solid;
+    /* border-left: 5px solid; */
     text-align: center;
 }
 
@@ -15,14 +15,17 @@
   background-color: #F2D7D5;
   border-left-color: #C0392B;
   color: #C0392B;
-  text-align: center;
 }
 
 .alert-info {
+    display: inline-block;
     background-color: #D6EAF8;
-    border-left-color: #3498DB;
+    /* border-left-color: #3498DB; */
     color: #3498DB;
 }
+
+
+/* https://github.com/nathancahill/skeleton-alerts */
 
 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
 #right-color-column{
@@ -167,12 +170,12 @@ img {
   background-color: white;
 }
 
-.toc-preview-buttons input{
+.toc-preview-buttons button{
   border: solid 1px #273e6d;
+  background-color: white;
 }
 
-.toc-preview-buttons input:hover{
-  border: solid 1px #273e6d;
+.toc-preview-buttons button:hover{
   color: #8b1515;
 }
 
@@ -181,6 +184,10 @@ img {
   font-family: Menlo;
   padding-top: 2%;
   padding-left: 18%
+}
+
+#toc-list li {
+  font-family: Proxima Nova;
 }
 
 

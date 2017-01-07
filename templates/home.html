@@ -17,10 +17,13 @@
       <div class="form-page row">
 
 
-        <form action="/scrape" method="post">
+        <form action="/scrape" method="post" onsubmit="timeWarning()" >
           <input id="url-field" type="text" name="url" placeholder="http://...">
           <input id="generate" type="submit" value="Scrape!">
         </form>
+
+        <div class="alert-info">
+        </div>
 
         <div class="alert-error">
           {% with messages = get_flashed_messages() %}
@@ -36,15 +39,13 @@
 
       </div>
 
-    {% endblock %}
+      <!-- JS
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <script type=text/javascript src="{{url_for('static', filename='scripts/timeWarning.js')}}"></script>
+        <!-- <script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.5.4/showdown.min.js"></script> -->
+        <!-- <script type=text/javascript src="{{url_for('static', filename='scripts/previewArchive.js')}}"></script> -->
+
+      {% endblock %}
   </body>
 </html>
 
-
-<!-- #      print '#Archive' -->
-<!-- #      for number in range(0, year_count+1):  # need to include the current year, so expand year count...kind of dumb) -->
-<!-- #      print '\n##Posts from %i' % (current_year - number) -->
-<!-- #      for d in self.article_dict_list: -->
-<!-- #          if d['year'] == (current_year - number): -->
-<!-- #              print d['link'] + "  " + "*(" + d['date'] + ")*" -->
-<!-- #      print output -->

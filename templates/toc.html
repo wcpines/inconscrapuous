@@ -17,12 +17,16 @@
       </div>
 
       <div class="row">
-        <form class="toc-preview-buttons" action="#">
-          <input id="preview-markdown" type="submit" value="Preview Markdown" />
-          <input id="copy-to-clipboard" type="submit" value="Copy to Clipboard" />
-        </form>
+        <div class="toc-preview-buttons" action="">
+          <button id="preview-markdown" onclick="previewMarkdown()">Preview Markdown</button>
+          <button id="copy-to-clipboard">Copy to Clipboard</button>
+        </div>
       </div>
 
+
+      <div id="test">
+        test
+      </div>
 
       <div class="row">
         <div class="eight columns" id="toc-list">
@@ -44,7 +48,8 @@
         {#For markdown preview#}
         <script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.5.4/showdown.min.js"></script>
         {#Test file#}
-        <script type=text/javascript src="{{url_for('static', filename='scripts/scrape.js')}}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='scripts/previewMarkdown.js')}}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='scripts/copyArchive.js')}}"></script>
 
   </body>
 {% endblock %}
