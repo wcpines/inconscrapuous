@@ -22,7 +22,7 @@ def home():
     """
 
     if request.args.getlist('err'):
-        animation = ""
+        animation = "shake"
     else:
         animation = "bigEntrance"
 

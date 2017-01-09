@@ -3,6 +3,7 @@ import datetime
 import requests
 import time
 import re
+from IPython import embed
 
 
 class Scraper:
@@ -109,7 +110,9 @@ class Scraper:
     def year_info(self):
         current_year = datetime.datetime.now().year
         oldest_article_year = min(self.year_list)
+        newest_article_year = max(self.year_list)
         return {
-            "current_year": current_year,
-            "oldest_article_year": oldest_article_year
+            #  "current_year": current_year,
+            "oldest_article_year": oldest_article_year,
+            "newest_article_year": newest_article_year
         }

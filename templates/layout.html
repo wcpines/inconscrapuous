@@ -37,14 +37,18 @@
     </div>
 
     <div class="row">
-      <div class="page-title">
 
-        <a href={{url_for('home')}}>
+      <div class="page-logo">
+        <a href={{url_for('home')}} >
           <img class={{animation}} id="logo" src="../static/images/incs_logo.png" />
+          <span class="home-text"> &laquo;  Click for Home Page</span>
         </a>
-        <h2> Inconscrapuous </h2>
-
       </div>
+
+      <div class="page-title">
+        <h2> Inconscrapuous </h2>
+      </div>
+
 
       {% block content %}
 

@@ -8,6 +8,8 @@
   <body>
 
     {% block content %}
+
+
       <div class="row" id="toc-directions"class="six columns">
         <p class="six columns">
         Below is your markdown-formatted archive.
@@ -19,22 +21,18 @@
       <div class="row">
         <div class="toc-preview-buttons" action="">
           <button id="preview-markdown" onclick="previewMarkdown()">Preview Markdown</button>
-          <button id="copy-to-clipboard">Copy to Clipboard</button>
+          <button id="copy-to-clipboard" onclick="copyToClipboard()">Copy to Clipboard</button>
         </div>
       </div>
 
 
-      <div id="test">
-        test
-      </div>
-
       <div class="row">
         <div class="eight columns" id="toc-list">
 
-          {% for n in range(0, (year_info['current_year'] - year_info['oldest_article_year']) + 1) %}
-            <p> ## Posts from {{ year_info['current_year'] - n}}<p>
+          {% for n in range(0, (year_info['newest_article_year'] - year_info['oldest_article_year']) + 1) %}
+            <p> ## Posts from {{ year_info['newest_article_year'] - n}}<p>
             {% for dict in article_dicts %}
-              {% if dict['year'] == (year_info['current_year'] - n) %}
+              {% if dict['year'] == (year_info['newest_article_year'] - n) %}
                 - {{dict['link']}} *({{ dict['date'] }})* <br>
               {% endif %}
             {% endfor %}
@@ -49,7 +47,7 @@
         <script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.5.4/showdown.min.js"></script>
         {#Test file#}
         <script type=text/javascript src="{{url_for('static', filename='scripts/previewMarkdown.js')}}"></script>
-        <script type=text/javascript src="{{url_for('static', filename='scripts/copyArchive.js')}}"></script>
+        <script type=text/javascript src="{{url_for('static', filename='scripts/copyToClipboard.js')}}"></script>
 
   </body>
 {% endblock %}
