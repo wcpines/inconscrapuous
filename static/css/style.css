@@ -69,7 +69,7 @@ img {
 
 a:hover .home-text {
   visibility: visible;
-  transition-delay:.5s;
+  transition-delay:.1s;
   opacity: 1;
 }
 
