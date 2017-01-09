@@ -1,12 +1,18 @@
+var previewButton = document.querySelector("#preview-markdown")
+
+// used to toggle preview
 var condition = true
 
+// https://github.com/showdownjs/showdown
 var converter = new showdown.Converter()
 
-var markdownContent = document.querySelector("#toc-list").innerHTML
+// includes html tags to be able to render it to page as literal markdown
+var tocContent = document.querySelector("#toc-list").innerHTML
 
-var tocContent = document.querySelector("#toc-list").textContent
+// includes only pure markdown text
+var markdownContent = document.querySelector("#toc-list").textContent
 
-var lines = tocContent.split(/\n/).filter( (line) => !line.match(/^\s*$/) ).map(
+var lines = markdownContent.split(/\n/).filter( (line) => !line.match(/^\s*$/) ).map(
   (line) => line.trim() )
 
 var htmlContent = lines.map( (line) => converter.makeHtml(line.trim()) ).join("\n")
@@ -14,10 +20,12 @@ var htmlContent = lines.map( (line) => converter.makeHtml(line.trim()) ).join("\
 function previewMarkdown(){
   var div = document.getElementById("toc-list")
   if (condition){
-    div.innerHTML = htmlContent
+    div.innerHTML = `<br><div class="sliding-middle-out" id="markdown-preview">${htmlContent}</div>`
+    previewButton.innerText = "Show Raw"
     condition = !condition
   }else{
-    div.innerHTML = markdownContent
+    div.innerHTML = tocContent
+    previewButton.innerText = "Preview Markdown"
     condition = !condition
   }
 }

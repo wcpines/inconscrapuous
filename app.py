@@ -22,7 +22,7 @@ def home():
     """
 
     if request.args.getlist('err'):
-        animation = ""
+        animation = "shake"
     else:
         animation = "bigEntrance"
 
@@ -45,18 +45,7 @@ def scrape():
             year_info = scraper.year_info()
             return render_template('toc.html', article_dicts = article_dicts, year_info = year_info, animation="")
 
-#  @app.route('/toc', methods=['GET'])
-#  def toc():
-
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-# QUESTIONS/TODO:
-    #  - Cache busting properly
-    #  - Using JS in another template to preview markdown
-    #  - Make button correct size
-    #  - Make compatible with FF and GC
-    #  - Make compatible with FF and GC
 

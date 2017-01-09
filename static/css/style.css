@@ -1,33 +1,86 @@
 /************
 -- Layout --
-************/
+ ************/
 
 
+/* https://github.com/nathancahill/skeleton-alerts */
+
+.feedback{
+  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 0.5s; /* Firefox < 16 */
+  -ms-animation: fadein 0.5s; /* Internet Explorer */
+  -o-animation: fadein 0.5s; /* Opera < 12.1 */
+  animation: fadein 0.5s;
+}
 .alert {
-    display: block;
-    padding: 20px;
-    /* border-left: 5px solid; */
-    text-align: center;
+  display: block;
+  padding: 20px;
+  /* border-left: 5px solid; */
+  text-align: center;
 }
 
 .alert-error {
   display: inline-block;
   background-color: #F2D7D5;
-  border-left-color: #C0392B;
   color: #C0392B;
 }
 
 .alert-info {
-    display: inline-block;
-    background-color: #D6EAF8;
-    /* border-left-color: #3498DB; */
-    color: #3498DB;
+  display: inline-block;
+  background-color: #D6EAF8;
+  color: #3498DB;
+  /* needed to add twice, not sure why... */
+  -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 0.5s; /* Firefox < 16 */
+  -ms-animation: fadein 0.5s; /* Internet Explorer */
+  -o-animation: fadein 0.5s; /* Opera < 12.1 */
+  animation: fadein 0.5s;
 }
 
 
-/* https://github.com/nathancahill/skeleton-alerts */
+.page-title {
+  font-family: FreightSans;
+  font-style: Bold;
+  text-align: center;
+}
 
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
+.page-logo {
+  text-align: center;
+  padding-top: 10%
+}
+
+img {
+  height: 150px;
+}
+
+.home-text{
+  position: absolute;
+  margin: auto;
+  text-align: center;
+  color: #bebebe;
+  padding-top: 50px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+}
+
+a:hover .home-text {
+  visibility: visible;
+  transition-delay:.1s;
+  opacity: 1;
+}
+
+.subtitle{
+
+  font-family: Raleway;
+  text-align: center;
+}
+
+
+/* http://colorzilla.com/gradient-editor/#1e5799+0,2989d8+50,207cca+51,7db9e8+100;Blue+Gloss+Default */
 #right-color-column{
   position:fixed;
   top:0 ;
@@ -59,146 +112,15 @@
   height:100%;
 }
 
-img {
-  height: 150px;
-}
-
-.bigEntrance{
-	animation-name: bigEntrance;
-	-webkit-animation-name: bigEntrance;
-
-	animation-duration: 1.6s;
-	-webkit-animation-duration: 1.6s;
-
-	animation-timing-function: ease-out;
-	-webkit-animation-timing-function: ease-out;
-
-	visibility: visible !important;
-}
-
-@keyframes bigEntrance {
-	0% {
-		transform: scale(0.3) rotate(6deg) translateX(-30%) translateY(30%);
-		opacity: 0.2;
-	}
-	30% {
-		transform: scale(1.03) rotate(-2deg) translateX(2%) translateY(-2%);
-		opacity: 1;
-	}
-	45% {
-		transform: scale(0.98) rotate(1deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	60% {
-		transform: scale(1.01) rotate(-1deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	75% {
-		transform: scale(0.99) rotate(1deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	90% {
-		transform: scale(1.01) rotate(0deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	100% {
-		transform: scale(1) rotate(0deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-}
-
-@-webkit-keyframes bigEntrance {
-	0% {
-		-webkit-transform: scale(0.3) rotate(6deg) translateX(-30%) translateY(30%);
-		opacity: 0.2;
-	}
-	30% {
-		-webkit-transform: scale(1.03) rotate(-2deg) translateX(2%) translateY(-2%);
-		opacity: 1;
-	}
-	45% {
-		-webkit-transform: scale(0.98) rotate(1deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	60% {
-		-webkit-transform: scale(1.01) rotate(-1deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	75% {
-		-webkit-transform: scale(0.99) rotate(1deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	90% {
-		-webkit-transform: scale(1.01) rotate(0deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-	100% {
-		-webkit-transform: scale(1) rotate(0deg) translateX(0%) translateY(0%);
-		opacity: 1;
-	}
-}
-
-.page-title {
-  font-family: FreightSans;
-  font-style: Bold;
-  text-align: center;
-  padding-top: 10%
-}
-
-.subtitle{
-
-  font-family: Raleway;
-  text-align: center;
-}
-
-/*********
--- TOC --
-*********/
-
-#toc-directions{
-
-  padding-left: 15%;
-  padding-top: 2%;
-  font-size: 1.2em;
-  font-weight: 700;
-}
-
-.toc-preview-buttons{
-  display: block;
-  float: left;
-  padding-left: 15%;
-  background-color: white;
-}
-
-.toc-preview-buttons button{
-  border: solid 1px #273e6d;
-  background-color: white;
-}
-
-.toc-preview-buttons button:hover{
-  color: #8b1515;
-}
-
-
-#toc-list{
-  font-family: Menlo;
-  padding-top: 2%;
-  padding-left: 18%
-}
-
-#toc-list li {
-  font-family: Proxima Nova;
-}
-
 
 /*********
 -- Home --
-*********/
+ *********/
 
 
 
 .errors{
-text-align: center;
+  text-align: center;
 }
 
 
@@ -234,9 +156,230 @@ h2,h3 {
   color: #8b1515;
 }
 
+/*********
+-- TOC --
+ *********/
+
+#toc-directions{
+
+  padding-left: 15%;
+  padding-top: 2%;
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+/* Button CSS copied from skeleton to match <input> */
+
+.toc-preview-buttons{
+  display: block;
+  float: left;
+  padding-left: 15%;
+  background-color: white;
+  height: 38px;
+  color: #555;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 38px;
+  letter-spacing: .1rem;
+}
+
+.toc-preview-buttons button{
+  text-transform: uppercase;
+  border: solid 1px #273e6d;
+  width: 190px !important;
+  background-color: white;
+  text-align: center;
+}
+
+.toc-preview-buttons button:hover{
+  color: #8b1515;
+}
+
+
+#toc-list{
+  font-family: Menlo;
+  padding-top: 2%;
+  padding-left: 18%
+}
+
+#markdown-preview{
+
+}
+
+#markdown-preview  li {
+  font-family: Proxima Nova;
+  list-style-type:disc;
+  font-size: 1.5em;
+}
+#markdown-preview  em {
+  color: #bebebe
+}
+
+#markdown-preview a:link {
+  color: #4d4d4d;
+  text-decoration: none;
+  border-bottom: none;
+}
+
+
+#markdown-preview a {
+  display: inline-block;
+  position: relative;
+}
+#markdown-preview a:after {
+  content: '';
+  display: block;
+  margin: auto;
+  height: 2px;
+  width: 0px;
+  background: transparent;
+  transition: width .3s ease, background-color .2s ease;
+}
+
+#markdown-preview a:hover:after {
+  width: 100%;
+  background: #303236;
+}
+
+
+/***************
+-- Animations --
+ ***************/
+
+.bigEntrance{
+  animation-name: bigEntrance;
+  -webkit-animation-name: bigEntrance;
+
+  animation-duration: 1.6s;
+  -webkit-animation-duration: 1.6s;
+
+  animation-timing-function: ease-out;
+  -webkit-animation-timing-function: ease-out;
+
+  visibility: visible !important;
+}
+
+@keyframes bigEntrance {
+  0% {
+    transform: scale(0.3) rotate(6deg) translateX(-30%) translateY(30%);
+    opacity: 0.2;
+  }
+  30% {
+    transform: scale(1.03) rotate(-2deg) translateX(2%) translateY(-2%);
+    opacity: 1;
+  }
+  45% {
+    transform: scale(0.98) rotate(1deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(1.01) rotate(-1deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.99) rotate(1deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  90% {
+    transform: scale(1.01) rotate(0deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes bigEntrance {
+  0% {
+    -webkit-transform: scale(0.3) rotate(6deg) translateX(-30%) translateY(30%);
+    opacity: 0.2;
+  }
+  30% {
+    -webkit-transform: scale(1.03) rotate(-2deg) translateX(2%) translateY(-2%);
+    opacity: 1;
+  }
+  45% {
+    -webkit-transform: scale(0.98) rotate(1deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  60% {
+    -webkit-transform: scale(1.01) rotate(-1deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  75% {
+    -webkit-transform: scale(0.99) rotate(1deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  90% {
+    -webkit-transform: scale(1.01) rotate(0deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: scale(1) rotate(0deg) translateX(0%) translateY(0%);
+    opacity: 1;
+  }
+}
+
+
+.shake {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /************
 -- Fonts --
-************/
+ ************/
 
 @import url(//fonts.googleapis.com/css?family=Raleway:400,300,600);
 
@@ -245,3 +388,12 @@ h2,h3 {
   src: url(../fonts/FreightSans-Bold.ttf);
   font-style: bold;
 }
+
+
+@font-face {
+  font-family: Proxima Nova;
+  src: url(../fonts/Proxima Nova.ttf);
+  font-style: bold;
+}
+
+
