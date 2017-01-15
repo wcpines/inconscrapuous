@@ -1,7 +1,7 @@
 // Not working yet...
 var div = document.querySelector('.alert-info')
 var err = document.querySelector(".alert-error")
-var message = "Note: Script takes 1 sec per page scraped"
+var message = "Note: Script takes up to 1 sec per page scraped"
 
 function timeWarning(){
   err.remove()

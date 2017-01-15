@@ -1,13 +1,11 @@
 # Do I need to pull all these in?
-from IPython import embed
 from inconscrapuous import Scraper
 from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
 app.jinja_env.cache = None
-app.secret_key = 'some_secret'
+app.secret_key = os.getenv('SOME_SECRET')
 
 @app.route('/test')
 def test():

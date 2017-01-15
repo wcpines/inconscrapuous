@@ -3,8 +3,6 @@ import datetime
 import requests
 import time
 import re
-from IPython import embed
-
 
 class Scraper:
     """Instantiate object to scrape pages"""
