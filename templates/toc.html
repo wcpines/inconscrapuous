@@ -29,9 +29,14 @@
       <div class="row">
         <div class="eight columns" id="toc-list">
 
+          <div class="most-recent-post">
+            <p> ### **Most Recent Post:**</p>
+            - {{ article_dicts[0]['link'] }}
+          </div>
+
           {% for n in range(0, (year_info['newest_article_year'] - year_info['oldest_article_year']) + 1) %}
-            <p> ## Posts from {{ year_info['newest_article_year'] - n}}<p>
-            {% for dict in article_dicts %}
+            <p> ## Posts from {{ year_info['newest_article_year'] - n}}</p>
+            {% for dict in article_dicts[1:] %}
               {% if dict['year'] == (year_info['newest_article_year'] - n) %}
                 - {{dict['link']}} *({{ dict['date'] }})* <br>
               {% endif %}

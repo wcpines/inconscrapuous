@@ -64,13 +64,29 @@ class Scraper:
             return article_sets
 
 
+    def parse_first_article_info(self, article):
+        """
+        Handles the most recent article in the blog. On the homepage, this
+        article does not have a date available, so it must be parsed and
+        formatted for the archive separately.
+        """
+        article_title = article('a')[0].getText().encode('utf-8')
+        link = 'http:'+article('a')[0].get('href').encode('utf-8')
+        mdown_link = '[%s](%s)' % (article_title, link)
+
+        first_article_dict = {
+            'link': mdown_link.decode('utf-8')
+        }
+        self.article_dict_list.append(first_article_dict)
+
+
     def parse_info(self, articles):
         """
-        For each article scraped, extract the 1) title, 2) date published (y/m/d),
-        and 3) URL. (1) and (3) are formatted into a markdown-style link. Add
-        values to a dict (aricle_dict) and append each dict to the master list
-        (article_dict_list). Add the year to the year_list, to be used for
-        generating headings.
+        For each article scraped, extract the 1) title, 2) date published
+        (y/m/d), and 3) URL. (1) and (3) are formatted into a markdown-style
+        link. Add values to a dict (aricle_dict) and append each dict to the
+        master list (article_dict_list). Add the year to the year_list, to be
+        used for generating headings.
         """
 
         for article in articles:
@@ -84,7 +100,7 @@ class Scraper:
                 year = int(datestring.split('-')[0])
 
                 article_dict = {
-                    'link': mdown_link.decode('utf-8'), # Jinja template needs it in unicode
+                    'link': mdown_link.decode('utf-8'),
                     'date': datestring,
                     'year': year
                 }
@@ -101,6 +117,10 @@ class Scraper:
         """
 
         article_sets = self.get_articles(url)
+
+        most_recent_article = article_sets[0].pop(0)
+        self.parse_first_article_info(most_recent_article)
+
         for articles in article_sets:
             self.parse_info(articles)
 
