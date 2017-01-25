@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__)
 app.jinja_env.cache = None
-app.secret_key = os.getenv('SOME_SECRET')
+app.secret_key = os.getenv('SECRET_KEY')
 
 @app.route('/test')
 def test():
